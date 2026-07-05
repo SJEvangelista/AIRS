@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import Header from '../components/header.vue';
+import Header from '../../components/header.vue';
 
 const router = useRouter();
 
@@ -48,13 +48,8 @@ function handleAvatarClick() {
     <div class="inbox-layout">
       <div class="inbox-sidebar">
         <h3>Notifications</h3>
-        <div
-          v-for="(n, idx) in notifications"
-          :key="idx"
-          class="notif-item"
-          :class="{ active: idx === activeIndex }"
-          @click="selectNotif(idx)"
-        >
+        <div v-for="(n, idx) in notifications" :key="idx" class="notif-item" :class="{ active: idx === activeIndex }"
+          @click="selectNotif(idx)">
           <div class="notif-title">
             <span class="notif-dot"></span>{{ n.title }}
           </div>
@@ -244,6 +239,7 @@ function handleAvatarClick() {
   .inbox-layout {
     flex-direction: column;
   }
+
   .inbox-sidebar {
     width: 100%;
     border-right: none;

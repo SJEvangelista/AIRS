@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Header from '../components/header.vue';
+import Header from '../../components/header.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -122,22 +122,15 @@ function handleAvatarClick() {
     </div>
 
     <div class="sport-tabs">
-      <button
-        v-for="key in categoryOrder"
-        :key="key"
-        :class="{ active: key === activeCategory }"
-        @click="switchCategory(key)"
-      >
+      <button v-for="key in categoryOrder" :key="key" :class="{ active: key === activeCategory }"
+        @click="switchCategory(key)">
         {{ categoryLabels[key] }}
       </button>
     </div>
 
     <div class="sports-content">
       <div class="sport-hero">
-        <div
-          class="sport-hero-img"
-          :style="{ background: currentCategory.heroGradient }"
-        ></div>
+        <div class="sport-hero-img" :style="{ background: currentCategory.heroGradient }"></div>
         <div class="sport-hero-body">
           <h3>{{ currentEvent.name }}</h3>
           <div class="meta-chips">
@@ -146,10 +139,7 @@ function handleAvatarClick() {
             <span class="chip teal">{{ currentEvent.slots }} slots left</span>
           </div>
           <p>{{ currentEvent.desc }}</p>
-          <button
-            class="btn-primary"
-            @click="goToRegister(currentEvent.name)"
-          >
+          <button class="btn-primary" @click="goToRegister(currentEvent.name)">
             Register for this Event →
           </button>
         </div>
@@ -157,13 +147,8 @@ function handleAvatarClick() {
 
       <div class="section-title">All Events</div>
       <div class="events-grid">
-        <div
-          v-for="(ev, idx) in currentCategory.events"
-          :key="ev.name"
-          class="event-card"
-          :class="{ selected: idx === activeEventIndex }"
-          @click="selectEvent(idx)"
-        >
+        <div v-for="(ev, idx) in currentCategory.events" :key="ev.name" class="event-card"
+          :class="{ selected: idx === activeEventIndex }" @click="selectEvent(idx)">
           <div class="event-cat">{{ activeCategory.toUpperCase() }}</div>
           <h4>{{ ev.name }}</h4>
           <p>{{ ev.desc }}</p>
@@ -172,19 +157,13 @@ function handleAvatarClick() {
             <span>{{ ev.total - ev.slots }}/{{ ev.total }}</span>
           </div>
           <div class="progress-bar">
-            <div
-              class="progress-fill"
-              :style="{ width: slotsFilledPct(ev) + '%' }"
-            ></div>
+            <div class="progress-fill" :style="{ width: slotsFilledPct(ev) + '%' }"></div>
           </div>
           <div class="event-footer">
             <div class="slots">
               TBA · {{ ev.venue }} · <strong>{{ ev.slots }} left</strong>
             </div>
-            <button
-              class="btn-sm"
-              @click.stop="goToRegister(ev.name)"
-            >
+            <button class="btn-sm" @click.stop="goToRegister(ev.name)">
               Sign Up
             </button>
           </div>
@@ -490,6 +469,7 @@ function handleAvatarClick() {
   .sport-hero {
     flex-direction: column;
   }
+
   .sport-hero-img {
     width: 100%;
     height: 180px;

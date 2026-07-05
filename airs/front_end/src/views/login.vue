@@ -1,20 +1,57 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const router = useRouter();
 
 const loginId = ref('');
 const loginPw = ref('');
+const errorMsg = ref('');
+const loading = ref(false);
 
-function handleLogin() {
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function formatAuthError(err) {
+  switch (err?.code) {
+    case 'auth/invalid-email':
+      return 'Enter a valid email address.';
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+      return 'Invalid email or password.';
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Try again later.';
+    default:
+      return err?.message || 'Sign-in failed.';
+  }
+}
+
+async function handleLogin() {
   if (!loginId.value.trim() || !loginPw.value.trim()) {
-    alert('Please enter your credentials.');
+    errorMsg.value = 'Please enter your credentials.';
     return;
   }
 
-  // TODO: replace with real API call to back_end
-  router.push('/main');
+  if (!isValidEmail(loginId.value.trim())) {
+    errorMsg.value = 'Use the email address you registered with.';
+    return;
+  }
+
+  errorMsg.value = '';
+  loading.value = true;
+
+  try {
+    await signInWithEmailAndPassword(auth, loginId.value.trim(), loginPw.value);
+    router.push('/main');
+  } catch (err) {
+    errorMsg.value = formatAuthError(err);
+  } finally {
+    loading.value = false;
+  }
 }
 
 function goToSignup() {
@@ -40,16 +77,22 @@ function goToLanding() {
         <p class="sub">Sign in to access your intramurals dashboard.</p>
 
         <div class="form-group">
-          <label>Student ID or Email</label>
-          <input type="text" v-model="loginId" placeholder="2026-00000" />
+          <label>Email Address</label>
+          <input type="email" v-model="loginId" placeholder="juan@student.adnu.edu.ph" />
         </div>
         <div class="form-group">
           <label>Password</label>
           <input type="password" v-model="loginPw" placeholder="••••••••" />
         </div>
 
-        <button class="btn-primary full-width mt-12" @click="handleLogin">
-          Sign In
+        <p v-if="errorMsg" class="error-text">{{ errorMsg }}</p>
+
+        <button
+          class="btn-primary full-width mt-12"
+          :disabled="loading"
+          @click="handleLogin"
+        >
+          {{ loading ? 'Signing In...' : 'Sign In' }}
         </button>
 
         <div class="auth-link mt-12">
@@ -188,6 +231,18 @@ function goToLanding() {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(75, 79, 217, 0.55);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-text {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-bottom: 12px;
 }
 
 .full-width {

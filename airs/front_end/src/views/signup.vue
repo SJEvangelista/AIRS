@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const router = useRouter();
 
@@ -11,8 +13,27 @@ const email = ref('');
 const dept = ref('');
 const year = ref('');
 const password = ref('');
+const errorMsg = ref('');
+const loading = ref(false);
 
-function handleSignup() {
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function formatAuthError(err) {
+  switch (err?.code) {
+    case 'auth/email-already-in-use':
+      return 'That email is already registered.';
+    case 'auth/invalid-email':
+      return 'Enter a valid email address.';
+    case 'auth/weak-password':
+      return 'Use a stronger password.';
+    default:
+      return err?.message || 'Account creation failed.';
+  }
+}
+
+async function handleSignup() {
   if (
     !fname.value.trim() ||
     !lname.value.trim() ||
@@ -22,12 +43,39 @@ function handleSignup() {
     !year.value ||
     !password.value.trim()
   ) {
-    alert('Please fill in all required fields.');
+    errorMsg.value = 'Please fill in all required fields.';
     return;
   }
 
-  // TODO: replace with real API call to back_end
-  router.push('/main');
+  if (!isValidEmail(email.value.trim())) {
+    errorMsg.value = 'Enter a valid email address.';
+    return;
+  }
+
+  if (password.value.trim().length < 6) {
+    errorMsg.value = 'Password must be at least 6 characters long.';
+    return;
+  }
+
+  errorMsg.value = '';
+  loading.value = true;
+
+  try {
+    const cred = await createUserWithEmailAndPassword(
+      auth,
+      email.value.trim(),
+      password.value
+    );
+    await updateProfile(cred.user, {
+      displayName: `${fname.value.trim()} ${lname.value.trim()}`,
+    });
+    // TODO: save sid, dept, year to Firestore/back_end here, keyed by cred.user.uid
+    router.push('/main');
+  } catch (err) {
+    errorMsg.value = formatAuthError(err);
+  } finally {
+    loading.value = false;
+  }
 }
 
 function goToLogin() {
@@ -104,8 +152,14 @@ function goToLanding() {
           <input type="password" v-model="password" placeholder="••••••••" />
         </div>
 
-        <button class="btn-primary full-width" @click="handleSignup">
-          Create Account
+        <p v-if="errorMsg" class="error-text">{{ errorMsg }}</p>
+
+        <button
+          class="btn-primary full-width"
+          :disabled="loading"
+          @click="handleSignup"
+        >
+          {{ loading ? 'Creating Account...' : 'Create Account' }}
         </button>
 
         <div class="auth-link">
@@ -256,6 +310,18 @@ function goToLanding() {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(75, 79, 217, 0.55);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-text {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-bottom: 12px;
 }
 
 .full-width {

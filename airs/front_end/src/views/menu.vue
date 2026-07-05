@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import Header from '../components/header.vue';
+import Header from '../../components/header.vue';
 
 const router = useRouter();
 
@@ -65,12 +65,7 @@ function handleAvatarClick() {
 
     <div class="section-title">Event Categories</div>
     <div class="categories-grid">
-      <div
-        v-for="cat in categories"
-        :key="cat.key"
-        class="category-card"
-        @click="showSports(cat.key)"
-      >
+      <div v-for="cat in categories" :key="cat.key" class="category-card" @click="showSports(cat.key)">
         <div class="thumb" :class="cat.thumbClass">
           <div class="thumb-overlay"></div>
         </div>
@@ -236,21 +231,21 @@ function handleAvatarClick() {
 
 .thumb-outdoor {
   background: linear-gradient(135deg, #1a3a6b, #1e4080),
-    url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400')
-      center/cover;
+    url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400') center/cover;
 }
+
 .thumb-esports {
   background: linear-gradient(135deg, #0f0a2e, #3a1a8a);
 }
+
 .thumb-boardgames {
   background: linear-gradient(135deg, #1a4a3a, #1e8060),
-    url('https://images.unsplash.com/photo-1606503825008-909a67e63c3d?w=400')
-      center/cover;
+    url('https://images.unsplash.com/photo-1606503825008-909a67e63c3d?w=400') center/cover;
 }
+
 .thumb-musical {
   background: linear-gradient(135deg, #4a1a1a, #8b2020),
-    url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400')
-      center/cover;
+    url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400') center/cover;
 }
 
 @media (max-width: 640px) {
