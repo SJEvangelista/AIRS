@@ -118,11 +118,7 @@ function goToLanding() {
 
         <div class="form-group">
           <label>Email Address</label>
-          <input
-            type="email"
-            v-model="email"
-            placeholder="juan@student.adnu.edu.ph"
-          />
+          <input type="email" v-model="email" placeholder="juan@student.adnu.edu.ph" />
         </div>
 
         <div class="form-group">
@@ -154,11 +150,7 @@ function goToLanding() {
 
         <p v-if="errorMsg" class="error-text">{{ errorMsg }}</p>
 
-        <button
-          class="btn-primary full-width"
-          :disabled="loading"
-          @click="handleSignup"
-        >
+        <button class="btn-primary full-width" :disabled="loading" @click="handleSignup">
           {{ loading ? 'Creating Account...' : 'Create Account' }}
         </button>
 

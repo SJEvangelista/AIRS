@@ -87,11 +87,7 @@ function goToLanding() {
 
         <p v-if="errorMsg" class="error-text">{{ errorMsg }}</p>
 
-        <button
-          class="btn-primary full-width mt-12"
-          :disabled="loading"
-          @click="handleLogin"
-        >
+        <button class="btn-primary full-width mt-12" :disabled="loading" @click="handleLogin">
           {{ loading ? 'Signing In...' : 'Sign In' }}
         </button>
 
