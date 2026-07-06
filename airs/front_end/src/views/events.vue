@@ -1,3 +1,5 @@
+#This is the Eventspage
+
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';

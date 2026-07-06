@@ -1,3 +1,4 @@
+#This is the Menu page
 <script setup>
 import { useRouter } from 'vue-router';
 import Header from '../../components/header.vue';
