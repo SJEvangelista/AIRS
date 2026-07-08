@@ -3,7 +3,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Header from '../../components/header.vue';
+import Header from '../../../components/header.vue';
 
 const route = useRoute();
 const router = useRouter();

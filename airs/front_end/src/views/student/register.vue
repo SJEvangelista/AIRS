@@ -1,4 +1,3 @@
-
 <template>
   <div class="register-page">
     <Header :userInitials="initials" @avatar-click="handleAvatarClick" />
@@ -56,19 +55,10 @@
           Select all events you wish to join. Maximum of {{ maxEvents }} events per student.
         </p>
         <div class="checkbox-grid">
-          <label
-            v-for="ev in allEvents"
-            :key="ev"
-            class="checkbox-item"
-            :class="{ checked: form.events.includes(ev), disabled: isDisabled(ev) }"
-          >
-            <input
-              type="checkbox"
-              :value="ev"
-              :checked="form.events.includes(ev)"
-              :disabled="isDisabled(ev)"
-              @change="toggleEvent(ev)"
-            />
+          <label v-for="ev in allEvents" :key="ev" class="checkbox-item"
+            :class="{ checked: form.events.includes(ev), disabled: isDisabled(ev) }">
+            <input type="checkbox" :value="ev" :checked="form.events.includes(ev)" :disabled="isDisabled(ev)"
+              @change="toggleEvent(ev)" />
             <span>{{ ev }}</span>
           </label>
         </div>
@@ -103,7 +93,7 @@
 <script setup>
 import { reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import Header from '../../components/header.vue'
+import Header from '../../../components/header.vue'
 
 const props = defineProps({
   maxEvents: { type: Number, default: 3 },
@@ -246,84 +236,225 @@ function handleAvatarClick() {
 
 /* Page header */
 .page-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 20px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
+
 .back-btn {
-  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #FFFFFF; border-radius: 8px; padding: 7px 14px;
-  font-size: 13px; cursor: pointer; transition: all .2s;
-}
-.back-btn:hover { background: #2D2FA8; border-color: #2D2FA8; }
-.page-header h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; }
-
-/* Body */
-.register-body { padding: 20px; max-width: 700px; margin: 0 auto; }
-
-.form-card {
-  background: #1A1F5E; border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px; padding: 24px; margin-bottom: 16px;
-}
-.form-card h4 {
-  font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
-  color: #5B8CFF; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-}
-.form-card h4::after { content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.12); }
-.hint { font-size: 12px; color: #9EA3C8; margin-bottom: 14px; margin-top: -8px; }
-
-.form-group { margin-bottom: 16px; }
-.form-group:last-child { margin-bottom: 0; }
-.form-group label { display: block; font-size: 12px; font-weight: 500; color: #9EA3C8; margin-bottom: 6px; }
-.form-group input, .form-group select {
-  width: 100%; padding: 11px 14px;
-  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px; color: #FFFFFF; font-size: 14px; font-family: inherit;
-  transition: border-color .2s; outline: none;
-}
-.form-group input::placeholder { color: rgba(255, 255, 255, 0.35); }
-.form-group input:focus, .form-group select:focus { border-color: #4B4FD9; }
-.form-group select option { background: #1A1F5E; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-/* Event checkboxes */
-.checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
-.checkbox-item {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px; padding: 10px 12px; cursor: pointer;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
   transition: all .2s;
 }
-.checkbox-item:hover:not(.disabled), .checkbox-item.checked {
-  border-color: #4B4FD9; background: rgba(75, 79, 217, 0.1);
+
+.back-btn:hover {
+  background: #2D2FA8;
+  border-color: #2D2FA8;
 }
-.checkbox-item.disabled { opacity: 0.4; cursor: not-allowed; }
-.checkbox-item input { accent-color: #4B4FD9; cursor: pointer; }
-.checkbox-item span { font-size: 13px; cursor: pointer; }
+
+.page-header h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Body */
+.register-body {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-card {
+  background: #1A1F5E;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.form-card h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #5B8CFF;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-card h4::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hint {
+  font-size: 12px;
+  color: #9EA3C8;
+  margin-bottom: 14px;
+  margin-top: -8px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9EA3C8;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color .2s;
+  outline: none;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #4B4FD9;
+}
+
+.form-group select option {
+  background: #1A1F5E;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Event checkboxes */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.checkbox-item:hover:not(.disabled),
+.checkbox-item.checked {
+  border-color: #4B4FD9;
+  background: rgba(75, 79, 217, 0.1);
+}
+
+.checkbox-item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.checkbox-item input {
+  accent-color: #4B4FD9;
+  cursor: pointer;
+}
+
+.checkbox-item span {
+  font-size: 13px;
+  cursor: pointer;
+}
 
 /* Submit */
 .btn-primary {
   background: linear-gradient(135deg, #2D2FA8, #4B4FD9);
-  color: #FFFFFF; border: none; border-radius: 10px;
-  padding: 13px 32px; font-size: 14px; font-weight: 600;
-  cursor: pointer; transition: all .2s; box-shadow: 0 4px 20px rgba(75, 79, 217, 0.4);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 20px rgba(75, 79, 217, 0.4);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(75, 79, 217, 0.55); }
-.submit-btn { margin-bottom: 32px; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(75, 79, 217, 0.55);
+}
+
+.submit-btn {
+  margin-bottom: 32px;
+}
 
 /* Toast */
 .toast {
-  position: fixed; bottom: 24px; right: 24px;
-  background: #1A1F5E; border: 1px solid #00C9B1;
-  color: #FFFFFF; padding: 14px 20px; border-radius: 10px;
-  font-size: 13px; font-weight: 500; z-index: 999;
-  display: flex; align-items: center; gap: 10px;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1A1F5E;
+  border: 1px solid #00C9B1;
+  color: #FFFFFF;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
-.toast-icon { color: #00C9B1; font-size: 10px; }
-.toast-fade-enter-active, .toast-fade-leave-active { transition: all .35s ease; }
-.toast-fade-enter-from, .toast-fade-leave-to { transform: translateY(80px); opacity: 0; }
+
+.toast-icon {
+  color: #00C9B1;
+  font-size: 10px;
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: all .35s ease;
+}
+
+.toast-fade-enter-from,
+.toast-fade-leave-to {
+  transform: translateY(80px);
+  opacity: 0;
+}
 
 @media (max-width: 640px) {
-  .form-row { grid-template-columns: 1fr; }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
